@@ -19,7 +19,7 @@ app.get('/test', async (req, res) => {
 
 // Routes
 app.use('/api/v1/auth', require('./modules/auth/auth.routes'));
-app.use('/api/v1/tasks', require('./modules/tasks/tasks.routes'));
+app.use('/api/v1/tasks', require('./modules/tasks/task.routes'));
 
 // Health check route
 app.get('/api/v1/health', (req, res) => {
