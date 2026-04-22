@@ -1,46 +1,42 @@
 const jwt = require('jsonwebtoken');
 const { JWT_SECRET } = require('../config/env');
-const prisma = require('../config/prisma');
 
-const protect = async (req, res, next) => {
-  let token;
+const authenticate = (req, res, next) => {
+  const authHeader = req.headers.authorization;
 
-  if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith('Bearer')
-  ) {
-    try {
-      token = req.headers.authorization.split(' ')[1];
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    const error = new Error('Authentication required');
+    error.statusCode = 401;
+    return next(error);
+  }
 
-      const decoded = jwt.verify(token, JWT_SECRET);
+  const token = authHeader.split(' ')[1];
 
-      // Support both 'id' and 'userId' in payload for compatibility
-      const userId = decoded.id || decoded.userId;
-
-      if (!userId) {
-        return res.status(401).json({ message: 'Not authorized, token invalid' });
-      }
-
-      req.user = await prisma.user.findUnique({
-        where: { id: userId },
-        select: { id: true, email: true, role: true },
-      });
-
-      if (!req.user) {
-        return res.status(401).json({ message: 'Not authorized, user not found' });
-      }
-
-      next();
-    } catch (error) {
-      console.error('Auth middleware error:', error.message);
-      return res.status(401).json({ message: 'Not authorized, token failed' });
-    }
-  } else {
-    return res.status(401).json({ message: 'Not authorized, no token' });
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    // Attach decoded payload to req.user
+    // We expect { userId, role } based on auth.service.js
+    req.user = decoded;
+    next();
+  } catch (err) {
+    const error = new Error('Invalid or expired token');
+    error.statusCode = 401;
+    next(error);
   }
 };
 
-module.exports = { 
-  protect,
-  authenticate: protect // Alias for compatibility with some routes
+const roleGuard = (requiredRole) => (req, res, next) => {
+  if (!req.user || req.user.role !== requiredRole) {
+    const error = new Error('Access denied: insufficient permissions');
+    error.statusCode = 403;
+    return next(error);
+  }
+  next();
+};
+
+module.exports = {
+  authenticate,
+  roleGuard,
+  // Add protect alias if needed
+  protect: authenticate
 };

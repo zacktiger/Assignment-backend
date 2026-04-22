@@ -1,150 +1,59 @@
+@import "tailwindcss";
+
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 2rem;
-  background-color: #1a1a1a;
-  border-bottom: 1px solid #333;
-  margin-bottom: 2rem;
-  width: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  box-sizing: border-box;
-  z-index: 1000;
-}
-
-.nav-brand a {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #646cff;
-}
-
-.nav-links {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-}
-
-.user-role {
-  font-size: 0.9rem;
-  color: #888;
-  background: #2a2a2a;
-  padding: 0.25rem 0.75rem;
-  border-radius: 20px;
-}
-
-.logout-nav-button {
-  width: auto;
-  padding: 0.4rem 1rem;
-  font-size: 0.9rem;
-  background-color: #ff4d4d;
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  color-scheme: dark;
 }
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-  padding-top: 60px; /* Space for fixed navbar */
+  background-color: #020617; /* Slate 950 */
+  color: #f8fafc; /* Slate 50 */
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+/* --- Premium Component Utilities --- */
+
+@utility surface-glass {
+  @apply bg-slate-900/40 backdrop-blur-xl border border-white/10 shadow-2xl;
 }
 
-.auth-container {
-  max-width: 400px;
-  margin: 0 auto;
-  padding: 2rem;
-  border-radius: 8px;
-  background-color: #1a1a1a;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+@utility surface-card {
+  @apply bg-slate-900/30 backdrop-blur-md border border-white/5 shadow-xl hover:border-white/10 hover:bg-slate-800/40 transition-all duration-300;
 }
 
-.form-group {
-  margin-bottom: 1rem;
-  text-align: left;
+@utility btn-primary {
+  @apply flex items-center justify-center gap-2 px-6 py-3 bg-indigo-600 hover:bg-indigo-500 
+         text-white font-semibold rounded-xl shadow-[0_0_20px_rgba(79,70,229,0.3)] 
+         transition-all duration-200 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed;
 }
 
-.form-group label {
-  display: block;
-  margin-bottom: 0.5rem;
+@utility btn-secondary {
+  @apply flex items-center justify-center gap-2 px-6 py-3 bg-slate-800 hover:bg-slate-700 
+         text-white font-semibold rounded-xl border border-white/5
+         transition-all duration-200 active:scale-[0.98];
 }
 
-.form-group input,
-.form-group select {
-  width: 100%;
-  padding: 0.5rem;
+@utility input-field {
+  @apply w-full px-4 py-3 bg-slate-950/50 border border-slate-800 rounded-xl 
+         focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 
+         transition-all duration-200 text-white placeholder:text-slate-500;
+}
+
+/* Hide native scrollbars for a cleaner look */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #334155;
   border-radius: 4px;
-  border: 1px solid #333;
-  background-color: #2a2a2a;
-  color: white;
-  box-sizing: border-box;
 }
-
-.error-message {
-  color: #ff4d4d;
-  margin-bottom: 1rem;
-  font-size: 0.9rem;
-}
-
-button {
-  width: 100%;
-  padding: 0.75rem;
-  border-radius: 4px;
-  border: none;
-  background-color: #646cff;
-  color: white;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background-color 0.25s;
-}
-
-button:hover {
-  background-color: #535bf2;
-}
-
-button:disabled {
-  background-color: #444;
-  cursor: not-allowed;
-}
-
-.logout-button {
-  margin-top: 1rem;
-  width: auto;
-  padding: 0.5rem 1.5rem;
-  background-color: #ff4d4d;
-}
-
-.logout-button:hover {
-  background-color: #ff3333;
-}
-
-a {
-  color: #646cff;
-  text-decoration: none;
-}
-
-a:hover {
-  color: #535bf2;
+::-webkit-scrollbar-thumb:hover {
+  background: #475569;
 }
